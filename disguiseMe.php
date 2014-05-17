@@ -3,7 +3,7 @@
 __PocketMine Plugin__
  name=Disguise
  description=Disguise as animals and stuff :)
- version=0.1.2
+ version=0.0.1
  author=Falk
  class=disguiseMe
  apiversion=10,11,12,13
@@ -16,19 +16,22 @@ class disguiseMe implements Plugin {
 
   public function init() {
     $this->api->addHandler("player.spawn", array($this, "renderDisguises"), 50);
+    $this->api->addHandler("player.quit", array($this, "purgeDisguise"), 50);
     $this->api->console->register("d", "Disguise as a mob", array($this, "command"));
     $this->d = array();
   }
 
   public function __destruct() {}
   public function command($cmd, $params, $issuer){
-    if(!($issuer instanceof Player)) return "You are using it wrong :(";
-    if(in_array($issuer->entity->eid, $this->d)) return $this->closeDisguise($issuer);
-    else return $this->enableDisguise($issuer,$params[0]);
+    if(!($issuer instanceof Player)) return "[Disguise] You can only diguise while in game.";
+    if(isset($this->d[$issuer->entity->eid])) return $this->closeDisguise($issuer);
+    if(isset($params[0])) return $this->enableDisguise($issuer,$params[0]);
+    return "Usage: /d <ID>";
   }
   public function renderDisguises($data){
    foreach ($this->d as $eid => $type) {
-    $e = $this->api->entity->get($eid);
+        if(($e = $this->api->entity->get($eid)) == false) continue;
+        if($e->level !== $data->entity->level) continue;
         $pk = new AddMobPacket;
         $pk->eid = $eid;
         $pk->type = $type; 
@@ -48,14 +51,23 @@ class disguiseMe implements Plugin {
         $data->dataPacket($pk);
    }
   }
+  public function purgeDisguise($p){
+    if(isset($this->d[$p->entity->eid])){
+        unset($this->d[$p->entity->eid]);
+        $pk = new RemoveEntityPacket;
+        $pk->eid = $p->entity->eid;
+        $this->sendPacket($p->entity,$pk);
+    }
+  }
   public function closeDisguise($p){
-   unset($this->d[$p->eid]);
+        $p->sendChat("[Disguise] Disguise closing, you will be kicked.");
+        $p->close("Closing Disguise");
+
   }
   public function enableDisguise($p,$e){
-
         $pk = new AddMobPacket;
         $pk->eid = $p->entity->eid;
-        $pk->type = 35; //Test with el creeper
+        $pk->type = $e; //Test with el creeper
         $pk->x = $p->entity->x;
         $pk->y = $p->entity->y;
         $pk->z = $p->entity->z;
@@ -71,7 +83,8 @@ class disguiseMe implements Plugin {
         $pk->speedZ = $p->entity->speedZ;
         $this->sendPacket($p->entity,$pk);
 
-        $this->d[$p->entity->eid] = 35;
+        $this->d[$p->entity->eid] = $e;
+        return "[Disguise] Disguise enabled.";
 
   }
   public function sendPacket($p,$pk){
