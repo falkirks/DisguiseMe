@@ -18,7 +18,7 @@ class disguiseMe implements Plugin {
     $this->api->addHandler("player.spawn", array($this, "renderDisguises"), 50);
     $this->api->addHandler("player.quit", array($this, "purgeDisguise"), 50);
     $this->api->addHandler("player.teleport.level", array($this, "changeLevel"), 50);
-    $this->api->console->register("d", "Disguise as a mob", array($this, "command"));
+    $this->api->console->register("dm", "Disguise as a mob", array($this, "command"));
     $this->d = array();
     $this->e = array(
       "chicken" => 10,
