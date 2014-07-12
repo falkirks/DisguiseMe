@@ -1,0 +1,24 @@
+name: DisguiseMe
+main: disguiseme\DisguiseMe
+version: 1.0
+author: Falk
+api: [1.0.0]
+load: POSTWORLD
+commands:
+ d:
+  permission: disguiseme.disguise
+  description: TapToDo command!
+  usage: /d <name> [player]
+permissions:
+ disguiseme:
+  default: op
+  children:
+   disguiseme.disguise:
+    default: op
+    description: Disguise!
+   disguiseme.other:
+    default: op
+    description: Disguise others
+   disguiseme.exempt:
+    default: op
+    description: See through disguises
