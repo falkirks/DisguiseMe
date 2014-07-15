@@ -51,21 +51,27 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
             }
         }
         else{
-            if(isset($args[0]) && $sender instanceof Player){
+            if($sender instanceof Player){
                 if($this->isDisguised($sender->getID())){
                     $this->destroyDisguise($sender->getID());
                     $sender->sendMessage("Disguise closed.");
                     return true;
                 }
                 else{
-                    $s = new DisguiseSession($sender, $args[0]);
-                    $this->e[$sender->getID()] = $s;
-                    $sender->sendMessage("Disguise activated.");
-                    return true;
+                    if(isset($args[0])){
+                        $s = new DisguiseSession($sender, $args[0]);
+                        $this->e[$sender->getID()] = $s;
+                        $sender->sendMessage("Disguise activated.");
+                        return true;
+                    }
+                    else{
+                        $sender->sendMessage("You need to specify a mob.");
+                        return true;
+                    }
                 }
             }
             else{
-                $sender->sendMessage("You need to specify disguise ID.");
+                $sender->sendMessage("You need to specify a player.");
                 return true;
             }
         }

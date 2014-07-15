@@ -5,6 +5,7 @@ namespace disguiseme;
 
 use pocketmine\network\protocol\AddMobPacket;
 use pocketmine\network\protocol\RemovePlayerPacket;
+use pocketmine\network\protocol\SetEntityMotionPacket;
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -30,11 +31,16 @@ class DisguiseSession {
         $pk2->yaw = $this->p->yaw;
         $pk2->metadata = [];
 
+        $pk3 = new SetEntityMotionPacket;
+        $pk3->entities = [
+            [$this->p->getID(), $this->p->motionX, $this->p->motionY, $this->p->motionZ]
+        ];
 
         foreach(Server::getInstance()->getOnlinePlayers() as $p){
             if($p->canSee($this->p) && !$p->hasPermission("disguiseme.exempt") && $p->getName() !== $this->p->getName()){
                 $p->dataPacket($pk);
                 $p->dataPacket($pk2);
+                $p->dataPacket($pk3);
             }
         }
     }
