@@ -26,7 +26,7 @@ class DisguiseSession {
         $pk2->type = $this->type;
         $pk2->x = $this->p->getX();
         $pk2->y = $this->p->getY();
-        $pk2->z = $this->p->getY();
+        $pk2->z = $this->p->getZ();
         $pk2->pitch = $this->p->pitch;
         $pk2->yaw = $this->p->yaw;
         $pk2->metadata = [];
