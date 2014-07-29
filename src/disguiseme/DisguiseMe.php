@@ -95,7 +95,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $pk->z = $event->getPacket()->z;
                       $pk->pitch = $event->getPacket()->pitch;
                       $pk->yaw = $event->getPacket()->yaw;
-                      $pk->metadata = $event->getPacket()->metadata;
+                      $pk->metadata = [];
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
               }
