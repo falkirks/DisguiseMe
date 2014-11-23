@@ -43,10 +43,13 @@ class DisguiseSession {
                 $p->dataPacket($pk3);
             }
         }
+        $this->p->setNameTag($this->p->getNameTag() . "\n [Disguised]");
     }
     public function despawnDisguise(){
         $this->p->despawnFromAll();
-
+    }
+    public function revertNameTag(){
+        $this->p->setNameTag(str_replace("\n [Disguised]", "", $this->p->getNameTag()));
     }
     public function getType(){
         return $this->type;

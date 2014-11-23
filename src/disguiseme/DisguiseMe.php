@@ -17,11 +17,14 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
 class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
+    /** @var  DisguiseSession[] */
     public $e;
+    /** @var  MobStore */
+    private $mobStore;
     public function onEnable(){
         $this->e = [];
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getLogger()->info("Loaded.");
+        $this->mobStore = new MobStore($this);
     }
     public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
         if(isset($args[1])){
@@ -34,9 +37,21 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                         return true;
                     }
                     else{
-                        $s = new DisguiseSession($p, $args[0]);
-                        $this->e[$p->getID()] = $s;
-                        $sender->sendMessage("Disguise activated for " . $p->getName());
+                        if(is_numeric($args[0])) {
+                            $s = new DisguiseSession($p, $args[0]);
+                            $this->e[$p->getID()] = $s;
+                            $sender->sendMessage("Disguise activated for " . $p->getName());
+                            $p->sendMessage("You now have a disguise.");
+                        }
+                        elseif(($mob = $this->getMobStore()->getMobId($args[0])) !== false){
+                            $s = new DisguiseSession($p, $mob);
+                            $this->e[$p->getID()] = $s;
+                            $sender->sendMessage("Disguise activated for " . $p->getName());
+                            $p->sendMessage("You now have a disguise.");
+                        }
+                        else{
+                            $sender->sendMessage("No mob found with that name.");
+                        }
                         return true;
                     }
                 }
@@ -59,9 +74,19 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                 }
                 else{
                     if(isset($args[0])){
-                        $s = new DisguiseSession($sender, $args[0]);
-                        $this->e[$sender->getID()] = $s;
-                        $sender->sendMessage("Disguise activated.");
+                        if(is_numeric($args[0])) {
+                            $s = new DisguiseSession($sender, $args[0]);
+                            $this->e[$sender->getID()] = $s;
+                            $sender->sendMessage("Disguise activated.");
+                        }
+                        elseif(($mob = $this->getMobStore()->getMobId($args[0])) !== false){
+                            $s = new DisguiseSession($sender, $mob);
+                            $this->e[$sender->getID()] = $s;
+                            $sender->sendMessage("Disguise activated.");
+                        }
+                        else{
+                            $sender->sendMessage("No mob found with that name.");
+                        }
                         return true;
                     }
                     else{
@@ -77,7 +102,6 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
         }
     }
     public function onPacketSend(DataPacketSendEvent $event){
-
         if(isset($event->getPacket()->eid)){
             if($this->isDisguised($event->getPacket()->eid) && !$event->getPlayer()->hasPermission("disguiseme.exempt")){
               if($event->getPacket() instanceof MovePlayerPacket){
@@ -125,9 +149,20 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
     public function destroyDisguise($i){
         if(isset($this->e[$i])){
             $this->e[$i]->despawnDisguise();
+            $this->e[$i]->revertNameTag();
             $p = $this->e[$i]->getPlayer();
             unset($this->e[$i]);
             $p->spawnToAll();
         }
+    }
+
+    /**
+     * @return MobStore
+     */
+    public function getMobStore(){
+        return $this->mobStore;
+    }
+    public function getResourcePath(){
+        return $this->getFile() . "/resources/";
     }
 }
