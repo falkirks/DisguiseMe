@@ -1,7 +1,7 @@
 name: DisguiseMe
 main: disguiseme\DisguiseMe
 version: 1.1
-author: Falk
+author: Falkirks
 api: [1.6.0]
 load: POSTWORLD
 commands:
