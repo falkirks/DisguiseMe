@@ -7,7 +7,6 @@ load: POSTWORLD
 commands:
  d:
   permission: disguiseme.disguise
-  description: TapToDo command!
   usage: /d <name> [player]
 permissions:
  disguiseme:
