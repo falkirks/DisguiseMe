@@ -6,6 +6,11 @@
     "14": ["wolf"],
     "15": ["villager"],
     "16": ["mooshroom"],
+    "17": ["squid"],
+    "19": ["bat"],
+    "20": ["irongolem"],
+    "21": ["snowgolem"],
+    "22": ["ocelot"],
     "32": ["zombie"],
     "33": ["creeper"],
     "34": ["skeleton"],
@@ -13,5 +18,10 @@
     "36": ["pigman"],
     "37": ["slime"],
     "38": ["enderman"],
-    "39": ["silverfish"]
+    "39": ["silverfish"],
+    "40": ["cavespider"],
+    "41": ["ghast"],
+    "42": ["magmacube"],
+    "43": ["blaze"],
+    "44": ["zombievillager"]
 }
