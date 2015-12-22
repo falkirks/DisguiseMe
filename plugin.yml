@@ -19,5 +19,5 @@ permissions:
     default: op
     description: Disguise others
    disguiseme.exempt:
-    default: op
+    default: false
     description: See through disguises
