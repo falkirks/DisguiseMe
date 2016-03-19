@@ -3,7 +3,7 @@
 namespace disguiseme;
 
 
-use pocketmine\network\protocol\AddMobPacket;
+use pocketmine\network\protocol\AddEntityPacket;
 use pocketmine\network\protocol\RemovePlayerPacket;
 use pocketmine\network\protocol\SetEntityMotionPacket;
 use pocketmine\Player;
@@ -21,7 +21,7 @@ class DisguiseSession {
         $pk->eid = $this->p->getID();
         $pk->clientID = 0;
 
-        $pk2 = new AddMobPacket;
+        $pk2 = new AddEntityPacket;
         $pk2->eid = $this->p->getID();
         $pk2->type = $this->type;
         $pk2->x = $this->p->getX();
