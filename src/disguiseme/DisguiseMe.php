@@ -106,12 +106,14 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
             if($this->isDisguised($event->getPacket()->eid) && !$event->getPlayer()->hasPermission("disguiseme.exempt")){
               if($event->getPacket() instanceof MovePlayerPacket){
                       $pk = new MoveEntityPacket;
-                      $pk->entities = [[$event->getPacket()->eid, $event->getPacket()->x, $event->getPacket()->y, $event->getPacket()->z, $event->getPacket()->yaw, $event->getPacket()->pitch]];
+                      $pk->x = $event->getPacket()->x;
+                      $pk->y = $event->getPacket()->y;
+                      $pk->z = $event->getPacket()->z;
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
               }
               elseif($event->getPacket() instanceof AddPlayerPacket){
-                      $pk = new AddMobPacket;
+                      $pk = new AddEntityPacket;
                       $pk->eid = $event->getPacket()->eid;
                       $pk->type = $this->e[$event->getPacket()->eid]->getType();
                       $pk->x = $event->getPacket()->x;
