@@ -7,12 +7,12 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\network\protocol\AddMobPacket;
+use pocketmine\network\protocol\AddEntityPacket;
 use pocketmine\network\protocol\AddPlayerPacket;
 use pocketmine\network\protocol\MoveEntityPacket;
 use pocketmine\network\protocol\MovePlayerPacket;
 use pocketmine\network\protocol\RemoveEntityPacket;
-use pocketmine\network\protocol\RemovePlayerPacket;
+//use pocketmine\network\protocol\RemovePlayerPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
@@ -125,7 +125,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
               }
-              elseif($event->getPacket() instanceof RemovePlayerPacket){
+              elseif($event->getPacket() instanceof RemoveEntityPacket){
                       $pk = new RemoveEntityPacket;
                       $pk->eid = $event->getPacket()->eid;
                       $event->getPlayer()->dataPacket($pk);
