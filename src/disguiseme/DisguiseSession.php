@@ -3,9 +3,9 @@
 namespace disguiseme;
 
 
-use pocketmine\network\protocol\AddEntityPacket;
-use pocketmine\network\protocol\RemoveEntityPacket;
-use pocketmine\network\protocol\SetEntityMotionPacket;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
+use pocketmine\network\mcpe\protocol\SetEntityMotionPacket;
 use pocketmine\Player;
 use pocketmine\Server;
 
@@ -17,11 +17,11 @@ class DisguiseSession {
         $this->startDisguise();
     }
     public function startDisguise(){
-        $pk = new RemoveEntityPacket;
+        $pk = new RemoveEntityPacket();
         $pk->eid = $this->p->getID();
         $pk->clientID = 0;
 
-        $pk2 = new AddEntityPacket;
+        $pk2 = new AddEntityPacket();
         $pk2->eid = $this->p->getID();
         $pk2->type = $this->type;
         $pk2->x = $this->p->getX();
@@ -31,7 +31,7 @@ class DisguiseSession {
         $pk2->yaw = $this->p->yaw;
         $pk2->metadata = [];
 
-        $pk3 = new SetEntityMotionPacket;
+        $pk3 = new SetEntityMotionPacket();
         $pk3->entities = [
             [$this->p->getID(), $this->p->motionX, $this->p->motionY, $this->p->motionZ]
         ];

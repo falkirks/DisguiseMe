@@ -7,12 +7,11 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketSendEvent;
-use pocketmine\network\protocol\AddEntityPacket;
-use pocketmine\network\protocol\AddPlayerPacket;
-use pocketmine\network\protocol\MoveEntityPacket;
-use pocketmine\network\protocol\MovePlayerPacket;
-use pocketmine\network\protocol\RemoveEntityPacket;
-//use pocketmine\network\protocol\RemovePlayerPacket;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\AddPlayerPacket;
+use pocketmine\network\mcpe\protocol\MoveEntityPacket;
+use pocketmine\network\mcpe\protocol\MovePlayerPacket;
+use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 
@@ -105,7 +104,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
         if(isset($event->getPacket()->eid)){
             if($this->isDisguised($event->getPacket()->eid) && !$event->getPlayer()->hasPermission("disguiseme.exempt")){
               if($event->getPacket() instanceof MovePlayerPacket){
-                      $pk = new MoveEntityPacket;
+                      $pk = new MoveEntityPacket();
                       $pk->x = $event->getPacket()->x;
                       $pk->y = $event->getPacket()->y;
                       $pk->z = $event->getPacket()->z;
@@ -113,7 +112,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $event->setCancelled();
               }
               elseif($event->getPacket() instanceof AddPlayerPacket){
-                      $pk = new AddEntityPacket;
+                      $pk = new AddEntityPacket();
                       $pk->eid = $event->getPacket()->eid;
                       $pk->type = $this->e[$event->getPacket()->eid]->getType();
                       $pk->x = $event->getPacket()->x;
@@ -126,7 +125,7 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $event->setCancelled();
               }
               elseif($event->getPacket() instanceof RemoveEntityPacket){
-                      $pk = new RemoveEntityPacket;
+                      $pk = new RemoveEntityPacket();
                       $pk->eid = $event->getPacket()->eid;
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
