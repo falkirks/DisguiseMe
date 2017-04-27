@@ -1,13 +1,9 @@
 name: DisguiseMe
-main: disguiseme\DisguiseMe
+main: falkirks\disguiseme\DisguiseMe
 version: 1.1
 author: Falkirks
 api: [3.0.0-ALPHA5]
 load: POSTWORLD
-commands:
- d:
-  permission: disguiseme.disguise
-  usage: /d <name> [player]
 permissions:
  disguiseme:
   default: op
@@ -19,5 +15,5 @@ permissions:
     default: op
     description: Disguise others
    disguiseme.exempt:
-    default: op
+    default: false
     description: See through disguises

@@ -124,12 +124,6 @@ class DisguiseMe extends PluginBase implements Listener, CommandExecutor{
                       $event->getPlayer()->dataPacket($pk);
                       $event->setCancelled();
               }
-              elseif($event->getPacket() instanceof RemoveEntityPacket){
-                      $pk = new RemoveEntityPacket();
-                      $pk->eid = $event->getPacket()->eid;
-                      $event->getPlayer()->dataPacket($pk);
-                      $event->setCancelled();
-              }
            }
         }
     }
