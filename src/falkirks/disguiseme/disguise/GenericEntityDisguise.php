@@ -2,7 +2,7 @@
 namespace falkirks\disguiseme\disguise;
 
 
-use pocketmine\event\player\PlayerEvent;
+use falkirks\disguiseme\exception\InvalidDisguiseException;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\MoveEntityPacket;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
@@ -10,17 +10,23 @@ use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
 use pocketmine\network\mcpe\protocol\SetEntityMotionPacket;
 use pocketmine\Player;
 
-class GenericMobDisguise extends AbstractDisguise {
+class GenericEntityDisguise extends AbstractDisguise {
     /** @var  int */
     protected $type;
 
     /**
-     * GenericMobDisguise constructor.
+     * GenericEntityDisguise constructor.
      * @param Player $subject
      * @param int $type
+     * @throws InvalidDisguiseException
      */
-    public function __construct(Player $subject, int $type){
+    public function __construct(Player $subject, $type){
         parent::__construct($subject);
+
+        if(!is_numeric($type) || $type < 0){
+            throw new InvalidDisguiseException("That entity ID is invalid.");
+        }
+
         $this->type = $type;
     }
 

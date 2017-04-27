@@ -2,11 +2,12 @@
 namespace falkirks\disguiseme;
 
 
+use falkirks\disguiseme\command\DisguiseCommand;
 use falkirks\disguiseme\disguise\Disguises;
-use falkirks\disguiseme\disguise\GenericMobDisguise;
+use falkirks\disguiseme\disguise\GenericEntityDisguise;
+use falkirks\disguiseme\disguise\MobDisguise;
 use falkirks\disguiseme\listener\PacketSendListener;
 use falkirks\disguiseme\listener\PlayerLeaveListener;
-use falkirks\disguiseme\command\DisguiseCommand;
 use pocketmine\plugin\PluginBase;
 
 class DisguiseMe extends PluginBase {
@@ -28,7 +29,8 @@ class DisguiseMe extends PluginBase {
         $this->playerLeaveListener = new PlayerLeaveListener($this);
         $this->packetSendListener = new PacketSendListener($this);
 
-        $this->disguiseStore->registerDisguise("id", GenericMobDisguise::class);
+        $this->disguiseStore->registerDisguise("id", GenericEntityDisguise::class);
+        $this->disguiseStore->registerDisguise("m", MobDisguise::class);
 
         $this->getServer()->getCommandMap()->register("disguiseme", $this->disguiseCommand);
         $this->getServer()->getPluginManager()->registerEvents($this->playerLeaveListener, $this);
@@ -69,9 +71,5 @@ class DisguiseMe extends PluginBase {
     public function getDisguiseStore(): Disguises{
         return $this->disguiseStore;
     }
-
-
-
-
 
 }
