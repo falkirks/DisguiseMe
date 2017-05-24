@@ -37,13 +37,13 @@ class DisguiseSession {
         ];
 
         foreach(Server::getInstance()->getOnlinePlayers() as $p){
-            if($p->canSee($this->p) && !$p->hasPermission("disguiseme.exempt") && $p->getName() !== $this->p->getName()){
+            //if($p->canSee($this->p) && !$p->hasPermission("disguiseme.exempt") && $p->getName() !== $this->p->getName()){
                 $p->dataPacket($pk);
                 $p->dataPacket($pk2);
                 $p->dataPacket($pk3);
-            }
+            //}
         }
-        $this->p->setNameTag($this->p->getNameTag() . "\n [Disguised]");
+        //$this->p->setNameTag($this->p->getNameTag() . "\n [Disguised]");
     }
     public function despawnDisguise(){
         $this->p->despawnFromAll();
